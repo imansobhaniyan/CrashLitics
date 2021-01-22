@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ighan.CrashLitics.DataAccessLayer\Ighan.CrashLitics.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Ighan.CrashLitics.Shared\Ighan.CrashLitics.Shared.csproj" />
+    <ProjectReference Include="..\Ighan.CrashLitics.StorageModels\Ighan.CrashLitics.StorageModels.csproj" />
+  </ItemGroup>
+
+</Project>
