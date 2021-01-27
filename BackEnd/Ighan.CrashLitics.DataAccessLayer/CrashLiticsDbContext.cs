@@ -21,5 +21,9 @@ namespace Ighan.CrashLitics.DataAccessLayer
         public DbSet<Manufacturer> Manufacturers { get; set; }
 
         public DbSet<Model> Models { get; set; }
+
+        public DbSet<ExceptionLog> ExceptionLogs { get; set; }
+
+        public DbSet<InnerExceptionLog> InnerExceptionLogs { get; set; }
     }
 }
