@@ -25,5 +25,11 @@ namespace Ighan.CrashLitics.DataAccessLayer
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
 
         public DbSet<InnerExceptionLog> InnerExceptionLogs { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Project> Projects { get; set; }
+
+        public DbSet<UserProject> UserProjects { get; set; }
     }
 }

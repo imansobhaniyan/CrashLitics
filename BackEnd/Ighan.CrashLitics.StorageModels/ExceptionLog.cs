@@ -16,6 +16,8 @@ namespace Ighan.CrashLitics.StorageModels
 
         public int DeviceId { get; set; }
 
+        public int ProjectId { get; set; }
+
         public string Message { get; set; }
 
         public string StackTrace { get; set; }
@@ -23,6 +25,8 @@ namespace Ighan.CrashLitics.StorageModels
         public DateTime CreateDate { get; set; }
 
         public Device Device { get; set; }
+
+        public Project Project { get; set; }
 
         public List<InnerExceptionLog> InnerExceptionLogs { get; set; }
     }

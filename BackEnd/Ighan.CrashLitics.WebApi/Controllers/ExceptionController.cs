@@ -47,7 +47,8 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                 {
                     InnerExceptionLogs = GetInnerExceptionLogs(model),
                     Message = model.Message,
-                    StackTrace = model.StackTrace
+                    StackTrace = model.StackTrace,
+                    Project = await GetProjectAsync(model)
                 });
 
                 await dbContext.SaveChangesAsync();
@@ -58,6 +59,19 @@ namespace Ighan.CrashLitics.WebApi.Controllers
             {
                 return new ApiResult<ExceptionModel> { ErrorMessage = exception.Message };
             }
+        }
+
+        private async Task<StorageModels.Project> GetProjectAsync(ExceptionModel model)
+        {
+            var project = await dbContext.Projects.FirstOrDefaultAsync(f => f.Token == model.Token);
+            if(project == null)
+            {
+                project = new StorageModels.Project
+                {
+                    Token = model.Token
+                };
+            }
+            return project;
         }
 
         private List<StorageModels.InnerExceptionLog> GetInnerExceptionLogs(ExceptionModel model)

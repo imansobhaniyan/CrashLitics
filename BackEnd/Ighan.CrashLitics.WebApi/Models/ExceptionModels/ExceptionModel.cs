@@ -7,6 +7,8 @@ namespace Ighan.CrashLitics.WebApi.Models.ExceptionModels
 {
     public class ExceptionModel
     {
+        public string Token { get; set; }
+
         public string DeviceId { get; set; }
 
         public string Manufacturer { get; set; }
