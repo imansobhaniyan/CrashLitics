@@ -10,6 +10,8 @@
 
         public string StackTrace { get; set; }
 
+        public int Index { get; set; }
+
         public ExceptionLog ExceptionLog { get; set; }
     }
 }
