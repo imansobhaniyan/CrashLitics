@@ -1,5 +1,7 @@
-﻿@layout LoginLayout
+﻿@using Ighan.CrashLitics.Shared.LoginModels
+@layout LoginLayout
 @page "/login"
+@inject HttpClient httpClient
 
 <div class="form-container">
     <div class="form-header">ورود</div>
@@ -15,12 +17,40 @@
     </div>
 </div>
 
+@if (hasError)
+{
+    <div class="error-container text-center">
+        <p>نام کاربری و یا رمز عبور اشتباه است.</p>
+    </div>
+}
+
 @code {
     private string userName;
 
     private string password;
 
+    private bool hasError;
+
     private async void TryLogin()
     {
+        var loginResponse = await httpClient.PostAsJsonAsync<LoginModel>("api/login", new LoginModel { UserName = userName, Password = password });
+        if (!loginResponse.IsSuccessStatusCode)
+            throw new Exception(await loginResponse.Content.ReadAsStringAsync());
+        else
+        {
+            var loginResult = await loginResponse.Content.ReadFromJsonAsync<ApiResult<LoginResult>>();
+            if (!loginResult.Success)
+                throw new Exception(loginResult.ErrorMessage);
+            else if (!loginResult.Data.Success)
+                ShowError();
+        }
+    }
+
+    public async void ShowError()
+    {
+        hasError = true;
+        await Task.Delay(3000);
+        hasError = false;
+        StateHasChanged();
     }
 }

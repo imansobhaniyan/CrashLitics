@@ -72,3 +72,27 @@
         .form-footer .btn-left:hover {
             background-image: linear-gradient(180deg, rgb(23, 162, 184) 0%, rgb(19, 132, 150) 100%);
         }
+
+.error-container {
+    position: fixed;
+    left: 50%;
+    bottom: 10%;
+    direction: rtl;
+    background-color: #ffc107;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: blue;
+    font-weight: bold;
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    border-radius: 25px;
+    -moz-box-shadow: 0 2px 5px #e0a800;
+    -webkit-box-shadow: 0 2px 5px #e0a800;
+    box-shadow: 0 2px 5px #e0a800;
+}
