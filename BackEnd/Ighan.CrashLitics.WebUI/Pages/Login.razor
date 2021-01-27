@@ -1,0 +1,26 @@
+﻿@layout LoginLayout
+@page "/login"
+
+<div class="form-container">
+    <div class="form-header">ورود</div>
+    <div class="form-body">
+        <div class="d-block text-center pt-1">نام کاربری</div>
+        <input class="form-control w-75 text-center" type="text" @bind="userName" />
+        <div class="d-block text-center pt-1">رمز عبور</div>
+        <input class="form-control w-75 text-center" type="password" @bind="password" />
+    </div>
+    <div class="form-footer">
+        <div class="btn-right" @onclick="TryLogin">تأیید</div>
+        <div class="btn-left">عضویت</div>
+    </div>
+</div>
+
+@code {
+    private string userName;
+
+    private string password;
+
+    private async void TryLogin()
+    {
+    }
+}

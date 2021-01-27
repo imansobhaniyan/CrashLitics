@@ -1,0 +1,74 @@
+﻿.form-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 200px;
+    width: 400px;
+    background-color: white;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    -moz-box-shadow: 3px 3px 2px rgba(125,125,125,0.75);
+    -webkit-box-shadow: 3px 3px 2px rgba(125,125,125,0.75);
+    box-shadow: 3px 3px 2px rgba(125,125,125,0.75);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.form-header {
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.form-body input {
+    position: relative;
+    left: 50%;
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.form-footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+    .form-footer .btn-right {
+        width: 50%;
+        padding: 3px;
+        text-align: center;
+        float: right;
+        background-image: linear-gradient(180deg, rgb(33, 136, 56) 0%, rgb(40, 167, 69) 100%);
+        color: white;
+        cursor: pointer;
+        border: 1px solid white;
+        -webkit-border-bottom-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+        .form-footer .btn-right:hover {
+            background-image: linear-gradient(180deg, rgb(40, 167, 69) 0%, rgb(33, 136, 56) 100%);
+        }
+
+    .form-footer .btn-left {
+        width: 50%;
+        padding: 3px;
+        text-align: center;
+        float: left;
+        background-image: linear-gradient(180deg, rgb(19, 132, 150) 0%, rgb(23, 162, 184) 100%);
+        color: white;
+        cursor: pointer;
+        border: 1px solid white;
+        -webkit-border-bottom-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+    }
+
+        .form-footer .btn-left:hover {
+            background-image: linear-gradient(180deg, rgb(23, 162, 184) 0%, rgb(19, 132, 150) 100%);
+        }
