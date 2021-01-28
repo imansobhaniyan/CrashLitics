@@ -17,6 +17,8 @@ namespace Ighan.CrashLitics.StorageModels
 
         public string Password { get; set; }
 
+        public string Token { get; set; }
+
         public List<UserProject> UserProjects { get; set; }
     }
 }

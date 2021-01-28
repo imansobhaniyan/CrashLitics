@@ -4,14 +4,16 @@ using Ighan.CrashLitics.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ighan.CrashLitics.DataAccessLayer.Migrations
 {
     [DbContext(typeof(CrashLiticsDbContext))]
-    partial class CrashLiticsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210128123726_add-token-for-user")]
+    partial class addtokenforuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

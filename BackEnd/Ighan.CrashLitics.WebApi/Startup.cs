@@ -39,6 +39,16 @@ namespace Ighan.CrashLitics.WebApi
                 options.UseSqlServer(conBuilder.Build());
             });
 
+            services.AddCors(setup =>
+            {
+                setup.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
+
             services.AddControllers();
         }
 
@@ -50,6 +60,13 @@ namespace Ighan.CrashLitics.WebApi
             }
 
             app.UseRouting();
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowAnyOrigin();
+            });
 
             app.UseEndpoints(endpoints =>
             {

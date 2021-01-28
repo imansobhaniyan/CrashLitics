@@ -31,12 +31,19 @@ namespace Ighan.CrashLitics.WebApi.Controllers
             {
                 var user = await dbContext.Users.FirstOrDefaultAsync(f => f.UserName == model.UserName && f.Password == model.Password);
 
+                if (user != null && string.IsNullOrWhiteSpace(user.Token))
+                {
+                    user.Token = string.Join("", Enumerable.Range(char.MinValue, char.MaxValue).Select(f => (char)f));
+                    await dbContext.SaveChangesAsync();
+                }
+
                 return new ApiResult<LoginResult>
                 {
                     Success = true,
                     Data = new LoginResult
                     {
-                        Success = user != null
+                        Success = user != null,
+                        Token = user?.Token
                     }
                 };
             }
