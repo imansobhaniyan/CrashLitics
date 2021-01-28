@@ -2,7 +2,8 @@
 @layout LoginLayout
 @page "/login"
 @inject HttpClient httpClient
-
+@inject NavigationManager navigationManager
+@inject Ighan.CrashLitics.WebUI.Utilities.TokenProvider tokenProvider
 <div class="form-container">
     <div class="form-header">ورود</div>
     <div class="form-body">
@@ -43,12 +44,18 @@
                 throw new Exception(loginResult.ErrorMessage);
             else if (!loginResult.Data.Success)
                 ShowError();
+            else
+            {
+                tokenProvider.SetToken(loginResult.Data.Token);
+                navigationManager.NavigateTo("/");
+            }
         }
     }
 
     public async void ShowError()
     {
         hasError = true;
+        StateHasChanged();
         await Task.Delay(3000);
         hasError = false;
         StateHasChanged();

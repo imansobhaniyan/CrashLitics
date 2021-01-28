@@ -1,3 +1,5 @@
+using Ighan.CrashLitics.WebUI.Utilities;
+
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,8 @@ namespace Ighan.CrashLitics.WebUI
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiSettings:Url"]) });
+
+            builder.Services.AddSingleton<TokenProvider>();
 
             await builder.Build().RunAsync();
         }
