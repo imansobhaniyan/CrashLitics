@@ -1,9 +1,6 @@
 ﻿@using Ighan.CrashLitics.Shared.ProjectModels
 @page "/"
-@inject HttpClient httpClient
-@inject NavigationManager navigationManager
-@inject Ighan.CrashLitics.WebUI.Utilities.TokenProvider tokenProvider
-
+@inject Ighan.CrashLitics.WebUI.Services.ProjectService service
 @if (projects != null)
 {
     foreach (var project in projects)
@@ -22,19 +19,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!(await tokenProvider.HasValidTokenAsync()))
-        {
-            navigationManager.NavigateTo("/login", true);
-        }
-        else
-        {
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("token", await tokenProvider.GetTokenAsync());
-            var projectsResponse = await httpClient.GetFromJsonAsync<ApiResult<List<ProjectResult>>>("/api/project");
-            if (!projectsResponse.Success)
-                throw new Exception(projectsResponse.ErrorMessage);
-            else
-                projects = projectsResponse.Data;
-        }
+        projects = await service.GetAllAsync();
+
         await base.OnInitializedAsync();
     }
 }

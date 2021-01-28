@@ -8,3 +8,7 @@ function getCookie(key) {
         value = "";
     return value;
 }
+
+function clearCookie(key) {
+    localStorage.removeItem(key);
+}

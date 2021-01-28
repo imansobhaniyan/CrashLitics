@@ -1,3 +1,4 @@
+using Ighan.CrashLitics.WebUI.Services;
 using Ighan.CrashLitics.WebUI.Utilities;
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -24,6 +25,8 @@ namespace Ighan.CrashLitics.WebUI
 
             builder.Services.AddSingleton<TokenProvider>();
             builder.Services.AddSingleton<CookieProvider>();
+
+            builder.Services.AddScoped<ProjectService>();
 
             await builder.Build().RunAsync();
         }
