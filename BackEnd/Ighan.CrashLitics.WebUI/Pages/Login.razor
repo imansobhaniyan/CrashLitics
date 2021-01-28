@@ -46,7 +46,7 @@
                 ShowError();
             else
             {
-                tokenProvider.SetToken(loginResult.Data.Token);
+                await tokenProvider.SetTokenAsync(loginResult.Data.Token);
                 navigationManager.NavigateTo("/");
             }
         }

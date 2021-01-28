@@ -23,6 +23,7 @@ namespace Ighan.CrashLitics.WebUI
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiSettings:Url"]) });
 
             builder.Services.AddSingleton<TokenProvider>();
+            builder.Services.AddSingleton<CookieProvider>();
 
             await builder.Build().RunAsync();
         }

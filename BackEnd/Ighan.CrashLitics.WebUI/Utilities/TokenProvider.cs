@@ -7,16 +7,21 @@ namespace Ighan.CrashLitics.WebUI.Utilities
 {
     public class TokenProvider
     {
-        private string token;
+        private readonly CookieProvider cookieProvider;
 
-        public void SetToken(string token)
+        public TokenProvider(CookieProvider cookieProvider)
         {
-            this.token = token;
+            this.cookieProvider = cookieProvider;
         }
 
-        public bool HasValidToken()
+        public async Task SetTokenAsync(string token)
         {
-            return !string.IsNullOrWhiteSpace(token);
+            await cookieProvider.SetAsync("token", token);
+        }
+
+        public async Task<bool> HasValidTokenAsync()
+        {
+            return !string.IsNullOrWhiteSpace(await cookieProvider.GetAsync("token"));
         }
     }
 }

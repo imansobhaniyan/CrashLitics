@@ -10,13 +10,16 @@ Welcome to your new app.
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code{
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        if (!tokenProvider.HasValidToken())
+        if (!(await tokenProvider.HasValidTokenAsync()))
         {
             navigationManager.NavigateTo("/login", true);
         }
-        base.OnInitialized();
+        else
+            {
+
+            }
+        await base.OnInitializedAsync();
     }
 }
