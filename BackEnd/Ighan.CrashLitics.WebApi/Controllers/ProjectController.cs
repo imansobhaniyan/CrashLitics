@@ -61,5 +61,50 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                 };
             }
         }
+
+        [HttpPost]
+        public async Task<ApiResult<ProjectResult>> Post(ProjectModel model)
+        {
+            try
+            {
+                var token = Request.Headers["token"];
+                if (token == StringValues.Empty)
+                    throw new Exception(ApiResult.InvalidTokenErrorMessage);
+
+                var project = await dbContext.Projects.FirstOrDefaultAsync(f => f.Id == model.Id);
+                if (project == null)
+                {
+                    project.UserProjects.Add(new StorageModels.UserProject
+                    {
+                        User = await dbContext.Users.FirstOrDefaultAsync(f => f.Token == token.ToString())
+                    });
+
+                    project = new StorageModels.Project();
+                    await dbContext.Projects.AddAsync(project);
+                }
+
+                project.Title = model.Title;
+
+                await dbContext.SaveChangesAsync();
+
+                return new ApiResult<ProjectResult>
+                {
+                    Success = true,
+                    Data = new ProjectResult
+                    {
+                        Id = project.Id,
+                        Title = project.Title,
+                        ExceptionLogsCount = await dbContext.ExceptionLogs.CountAsync(f => f.ProjectId == project.Id)
+                    }
+                };
+            }
+            catch (Exception exception)
+            {
+                return new ApiResult<ProjectResult>
+                {
+                    ErrorMessage = exception.Message
+                };
+            }
+        }
     }
 }
