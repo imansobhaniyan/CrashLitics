@@ -1,6 +1,7 @@
 ﻿@using Ighan.CrashLitics.Shared.ProjectModels
 @page "/"
 @inject Ighan.CrashLitics.WebUI.Services.ProjectService service
+
 @if (projects != null)
 {
     foreach (var project in projects)
@@ -15,6 +16,8 @@
 
 @code{
 
+    private string newProjectTitle;
+
     private List<ProjectResult> projects;
 
     protected override async Task OnInitializedAsync()
@@ -22,5 +25,10 @@
         projects = await service.GetAllAsync();
 
         await base.OnInitializedAsync();
+    }
+
+    private async void AddProject()
+    {
+        await service.AddProjectAsync(newProjectTitle);
     }
 }

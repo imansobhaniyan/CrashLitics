@@ -41,21 +41,37 @@ namespace Ighan.CrashLitics.WebUI.Services
         {
             var response = await (await GetHttpClientAsync()).GetFromJsonAsync<ApiResult<T>>(ApiAddress);
 
-            if (!response.Success)
-                if (response.ErrorMessage == ApiResult.InvalidTokenErrorMessage)
-                {
-                    navigationManager.NavigateTo("/login");
-                    return default;
-                }
-                else
-                    throw new Exception(response.ErrorMessage);
-
-            return response.Data;
+            return ProcessApiResult<T>(response);
         }
 
         protected async Task<List<T>> GetListAsync<T>()
         {
             return await GetAsync<List<T>>();
+        }
+
+        protected async Task<TResult> PostAsync<TResult, YModel>(YModel model)
+        {
+            var response = await (await GetHttpClientAsync()).PostAsJsonAsync<YModel>(ApiAddress, model);
+            if (!response.IsSuccessStatusCode)
+                throw new Exception(await response.Content.ReadAsStringAsync());
+
+            var result = await response.Content.ReadFromJsonAsync<ApiResult<TResult>>();
+            
+            return ProcessApiResult(result);
+        }
+
+        private TResult ProcessApiResult<TResult>(ApiResult<TResult> result)
+        {
+            if (!result.Success)
+                if (result.ErrorMessage == ApiResult.InvalidTokenErrorMessage)
+                {
+                    navigationManager.NavigateTo("/login");
+                    return default;
+                }
+                else
+                    throw new Exception(result.ErrorMessage);
+
+            return result.Data;
         }
     }
 }

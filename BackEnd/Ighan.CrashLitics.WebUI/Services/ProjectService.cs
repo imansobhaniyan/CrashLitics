@@ -31,5 +31,12 @@ namespace Ighan.CrashLitics.WebUI.Services
 
             return projects;
         }
+
+        public async Task<ProjectResult> AddProjectAsync(string title)
+        {
+            var newProject = await PostAsync<ProjectResult, ProjectModel>(new ProjectModel { Title = title });
+            projects.Add(newProject);
+            return newProject;
+        }
     }
 }
