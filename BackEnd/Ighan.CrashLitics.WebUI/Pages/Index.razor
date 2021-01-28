@@ -1,15 +1,25 @@
-﻿@page "/"
+﻿@using Ighan.CrashLitics.Shared.ProjectModels
+@page "/"
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject Ighan.CrashLitics.WebUI.Utilities.TokenProvider tokenProvider
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+@if (projects != null)
+{
+    foreach (var project in projects)
+    {
+        <div class="card">
+            <div class="card-header">@project.Title</div>
+        </div>
+    }
+}
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code{
+
+    private List<ProjectResult> projects;
+
     protected override async Task OnInitializedAsync()
     {
         if (!(await tokenProvider.HasValidTokenAsync()))
@@ -17,9 +27,14 @@ Welcome to your new app.
             navigationManager.NavigateTo("/login", true);
         }
         else
-            {
-
-            }
+        {
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("token", await tokenProvider.GetTokenAsync());
+            var projectsResponse = await httpClient.GetFromJsonAsync<ApiResult<List<ProjectResult>>>("/api/project");
+            if (!projectsResponse.Success)
+                throw new Exception(projectsResponse.ErrorMessage);
+            else
+                projects = projectsResponse.Data;
+        }
         await base.OnInitializedAsync();
     }
 }

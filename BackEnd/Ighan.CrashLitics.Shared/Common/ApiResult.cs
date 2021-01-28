@@ -5,6 +5,11 @@ using System.Text;
 
 namespace Ighan.CrashLitics.Shared.Common
 {
+    public class ApiResult
+    {
+        public const string InvalidTokenErrorMessage = "Invalid token";
+    }
+
     public class ApiResult<T>
     {
         public bool Success { get; set; }

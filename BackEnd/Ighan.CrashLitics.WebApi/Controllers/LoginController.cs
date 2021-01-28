@@ -19,6 +19,8 @@ namespace Ighan.CrashLitics.WebApi.Controllers
     {
         private readonly CrashLiticsDbContext dbContext;
 
+        private readonly static Random rand = new Random();
+
         public LoginController(CrashLiticsDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -33,7 +35,8 @@ namespace Ighan.CrashLitics.WebApi.Controllers
 
                 if (user != null && string.IsNullOrWhiteSpace(user.Token))
                 {
-                    user.Token = string.Join("", Enumerable.Range(char.MinValue, char.MaxValue).Select(f => (char)f));
+
+                    user.Token = string.Join("", Enumerable.Range(0, 255).Select(f => (char)rand.Next((int)'A', (int)'z')));
                     await dbContext.SaveChangesAsync();
                 }
 

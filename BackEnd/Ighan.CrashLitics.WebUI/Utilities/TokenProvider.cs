@@ -19,9 +19,14 @@ namespace Ighan.CrashLitics.WebUI.Utilities
             await cookieProvider.SetAsync("token", token);
         }
 
+        public async Task<string> GetTokenAsync()
+        {
+            return await cookieProvider.GetAsync("token");
+        }
+
         public async Task<bool> HasValidTokenAsync()
         {
-            return !string.IsNullOrWhiteSpace(await cookieProvider.GetAsync("token"));
+            return !string.IsNullOrWhiteSpace(await GetTokenAsync());
         }
     }
 }
