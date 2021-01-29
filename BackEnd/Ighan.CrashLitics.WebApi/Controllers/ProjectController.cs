@@ -74,12 +74,15 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                 var project = await dbContext.Projects.FirstOrDefaultAsync(f => f.Id == model.Id);
                 if (project == null)
                 {
+                    project = new StorageModels.Project();
+
+                    var user = await dbContext.Users.FirstOrDefaultAsync(f => f.Token == token.ToString());
+
                     project.UserProjects.Add(new StorageModels.UserProject
                     {
-                        User = await dbContext.Users.FirstOrDefaultAsync(f => f.Token == token.ToString())
+                        User = user
                     });
 
-                    project = new StorageModels.Project();
                     await dbContext.Projects.AddAsync(project);
                 }
 

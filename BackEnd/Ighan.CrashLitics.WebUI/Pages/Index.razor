@@ -2,14 +2,23 @@
 @page "/"
 @inject Ighan.CrashLitics.WebUI.Services.ProjectService service
 
+<div class="form-inline">
+    <input type="text" class="form-control" placeholder="عنوان برای پروژه جدید" @bind="newProjectTitle" />
+    <button type="button" class="btn btn-success mx-3" @onclick="AddProject">تأیید</button>
+</div>
+
 @if (projects != null)
 {
-    foreach (var project in projects)
-    {
-        <div class="card">
-            <div class="card-header">@project.Title</div>
-        </div>
-    }
+    <div class="row">
+        @foreach (var project in projects)
+        {
+            <div class="col-md-3 mt-5">
+                <div class="card">
+                    <div class="card-header">@project.Title</div>
+                </div>
+            </div>
+        }
+    </div>
 }
 
 <SurveyPrompt Title="How is Blazor working for you?" />
@@ -30,5 +39,8 @@
     private async void AddProject()
     {
         await service.AddProjectAsync(newProjectTitle);
+        newProjectTitle = string.Empty;
+        projects = await service.GetAllAsync();
+        StateHasChanged();
     }
 }

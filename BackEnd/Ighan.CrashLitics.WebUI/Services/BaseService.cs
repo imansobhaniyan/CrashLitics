@@ -32,7 +32,7 @@ namespace Ighan.CrashLitics.WebUI.Services
 
         protected async Task<HttpClient> GetHttpClientAsync()
         {
-            if (await tokenProvider.HasValidTokenAsync())
+            if (await tokenProvider.HasValidTokenAsync() && !httpClient.DefaultRequestHeaders.Contains("token"))
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("token", await tokenProvider.GetTokenAsync());
             return httpClient;
         }
