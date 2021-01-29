@@ -1,0 +1,9 @@
+﻿@page "/project/{projectId:int}"
+@inject Ighan.CrashLitics.WebUI.Services.ProjectService service
+
+<h3>Project</h3>
+
+@code {
+    [Parameter]
+    public int ProjectId { get; set; }
+}
