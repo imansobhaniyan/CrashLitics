@@ -30,15 +30,18 @@
     protected override async Task OnInitializedAsync()
     {
         projects = await service.GetAllAsync();
+        service.OnProjectAdded += (newProject) =>
+        {
+            projects.Add(newProject);
+            newProjectTitle = string.Empty;
+            StateHasChanged();
+        };
 
-        await base.OnInitializedAsync();
+    await base.OnInitializedAsync();
     }
 
     private async void AddProject()
     {
         await service.AddProjectAsync(newProjectTitle);
-        newProjectTitle = string.Empty;
-        projects = await service.GetAllAsync();
-        StateHasChanged();
     }
 }

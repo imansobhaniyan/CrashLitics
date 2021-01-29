@@ -15,6 +15,10 @@ namespace Ighan.CrashLitics.WebUI.Services
 {
     public class ProjectService : BaseService
     {
+        public delegate void ProjectAddedEventHandler(ProjectResult projectResult);
+
+        public event ProjectAddedEventHandler OnProjectAdded;
+
         protected override string ApiAddress { get { return "/api/project"; } }
 
         private List<ProjectResult> projects;
@@ -22,6 +26,7 @@ namespace Ighan.CrashLitics.WebUI.Services
         public ProjectService(HttpClient httpClient, TokenProvider tokenProvider, NavigationManager navigationManager)
             : base(httpClient, tokenProvider, navigationManager)
         {
+            OnProjectAdded += (newProject) => projects.Add(newProject);
         }
 
         public async Task<List<ProjectResult>> GetAllAsync()
@@ -35,7 +40,7 @@ namespace Ighan.CrashLitics.WebUI.Services
         public async Task<ProjectResult> AddProjectAsync(string title)
         {
             var newProject = await PostAsync<ProjectResult, ProjectModel>(new ProjectModel { Title = title });
-            projects.Add(newProject);
+            OnProjectAdded.Invoke(newProject);
             return newProject;
         }
     }

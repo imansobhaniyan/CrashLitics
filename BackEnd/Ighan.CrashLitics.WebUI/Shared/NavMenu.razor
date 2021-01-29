@@ -1,27 +1,37 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Ighan.CrashLitics.WebUI</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+﻿@using Ighan.CrashLitics.WebUI.Services
+@inject ProjectService service
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href=""><strong>Ighan</strong> CrashLitics</a>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+@if (projects != null)
+{
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
+            @foreach (var project in projects)
+            {
+                var link = $"/project/{project.Id}";
+                <NavLink class="nav-link" href="@link" Match="NavLinkMatch.All">
+                    <span class="oi oi-spreadsheet" aria-hidden="true"></span> @project.Title
+                </NavLink>
+            }
         </li>
     </ul>
-</div>
+}
 
 @code {
-    private bool collapseNavMenu = true;
+    private List<Ighan.CrashLitics.Shared.ProjectModels.ProjectResult> projects;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected async override Task OnInitializedAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+        projects = await service.GetAllAsync();
+        service.OnProjectAdded += (newProject) =>
+        {
+            projects.Add(newProject);
+            StateHasChanged();
+        };
+
+        await base.OnInitializedAsync();
     }
 }
