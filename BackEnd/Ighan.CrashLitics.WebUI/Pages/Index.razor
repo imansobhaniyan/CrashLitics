@@ -7,37 +7,19 @@
     <button type="button" class="btn btn-success mx-3" @onclick="AddProject">تأیید</button>
 </div>
 
-@if (projects != null)
-{
-    <div class="row">
-        @foreach (var project in projects)
-        {
-            <div class="col-md-3 mt-5">
-                <div class="card">
-                    <div class="card-header">@project.Title</div>
-                </div>
-            </div>
-        }
-    </div>
-}
-
 @code{
 
     private string newProjectTitle;
 
-    private List<ProjectResult> projects;
-
     protected override async Task OnInitializedAsync()
     {
-        projects = await service.GetAllAsync();
         service.OnProjectAdded += (newProject) =>
         {
-            projects.Add(newProject);
             newProjectTitle = string.Empty;
             StateHasChanged();
         };
 
-    await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
     }
 
     private async void AddProject()
