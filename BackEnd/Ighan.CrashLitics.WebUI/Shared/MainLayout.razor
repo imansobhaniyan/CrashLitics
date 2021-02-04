@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject Ighan.CrashLitics.WebUI.Utilities.TokenProvider tokenProvider
+@inject NavigationManager navigationManager
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +9,7 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+            <button type="button" class="btn btn-danger ml-md-auto" @onclick="LogOut">خروج</button>
         </div>
 
         <div class="content px-4">
@@ -15,3 +17,11 @@
         </div>
     </div>
 </div>
+
+@code{
+    private async void LogOut()
+    {
+        await tokenProvider.ClearTokenAsync();
+        navigationManager.NavigateTo("/login");
+    }
+}

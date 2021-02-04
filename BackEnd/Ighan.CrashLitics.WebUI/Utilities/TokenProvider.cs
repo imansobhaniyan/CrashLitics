@@ -28,5 +28,10 @@ namespace Ighan.CrashLitics.WebUI.Utilities
         {
             return !string.IsNullOrWhiteSpace(await GetTokenAsync());
         }
+
+        public async Task ClearTokenAsync()
+        {
+            await cookieProvider.ClearAsync("token");
+        }
     }
 }

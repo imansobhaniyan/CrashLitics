@@ -25,5 +25,10 @@ namespace Ighan.CrashLitics.WebUI.Utilities
         {
             return await jsRuntime.InvokeAsync<string>("getCookie", key);
         }
+
+        public async Task ClearAsync(string key)
+        {
+            await jsRuntime.InvokeVoidAsync("clearCookie", key);
+        }
     }
 }
