@@ -5,7 +5,7 @@
 {
     <h3 class="d-inline">@project?.Title</h3>
 
-    <div class="alert alert-success d-inline">@project?.Token</div>
+    <div class="alert alert-success d-inline mx-5">Token: <strong>@project?.Token</strong></div>
 
     foreach (var exceptionLog in project.ExceptionLogs)
     {
@@ -14,8 +14,8 @@
             visibilities.Add(exceptionLog.Id, false);
         }
 
-        <div class="card my-3">
-            <div class="card-header pointer" @onclick="() => visibilities[exceptionLog.Id] = !visibilities[exceptionLog.Id]">@exceptionLog.CreateDate: @exceptionLog.Message</div>
+        <div class="card my-4">
+            <div class="card-header pointer" @onclick="() => visibilities[exceptionLog.Id] = !visibilities[exceptionLog.Id]"><strong>@exceptionLog.CreateDate</strong>: @exceptionLog.Message</div>
             @if (visibilities[exceptionLog.Id])
             {
                 <div class="card-body">@exceptionLog.StackTrace</div>
