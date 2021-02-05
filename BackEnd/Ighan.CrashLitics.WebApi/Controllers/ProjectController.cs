@@ -20,9 +20,42 @@ namespace Ighan.CrashLitics.WebApi.Controllers
     {
         private readonly CrashLiticsDbContext dbContext;
 
+        private readonly static Random rand = new Random();
+
         public ProjectController(CrashLiticsDbContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ApiResult<ProjectDetailResult>> Get(int id)
+        {
+            try
+            {
+                var token = Request.Headers["token"];
+                if (token == StringValues.Empty)
+                    throw new Exception(ApiResult.InvalidTokenErrorMessage);
+
+                var project = await dbContext.Projects.FirstOrDefaultAsync(f => f.Id == id);
+
+                return new ApiResult<ProjectDetailResult>
+                {
+                    Success = true,
+                    Data = new ProjectDetailResult
+                    {
+                        Id = project.Id,
+                        Title = project.Title,
+                        Token = project.Token
+                    }
+                };
+            }
+            catch (Exception exception)
+            {
+                return new ApiResult<ProjectDetailResult>
+                {
+                    ErrorMessage = exception.Message
+                };
+            }
         }
 
         [HttpGet]
@@ -74,7 +107,10 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                 var project = await dbContext.Projects.FirstOrDefaultAsync(f => f.Id == model.Id);
                 if (project == null)
                 {
-                    project = new StorageModels.Project();
+                    project = new StorageModels.Project
+                    {
+                        Token = await GetUniqeTokenAsync()
+                    };
 
                     var user = await dbContext.Users.FirstOrDefaultAsync(f => f.Token == token.ToString());
 
@@ -108,6 +144,19 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                     ErrorMessage = exception.Message
                 };
             }
+        }
+
+        private async Task<string> GetUniqeTokenAsync()
+        {
+            string token;
+
+            do
+            {
+                token = string.Join("", Enumerable.Range(0, 15).Select(f => (char)rand.Next((int)'a', (int)'z')));
+            }
+            while (await dbContext.Projects.AnyAsync(f => f.Token == token));
+
+            return token;
         }
     }
 }

@@ -28,7 +28,6 @@
         projects = await service.GetAllAsync();
         service.OnProjectAdded += (newProject) =>
         {
-            projects.Add(newProject);
             StateHasChanged();
         };
 

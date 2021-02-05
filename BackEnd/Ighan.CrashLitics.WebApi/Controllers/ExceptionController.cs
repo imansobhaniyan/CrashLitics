@@ -78,7 +78,7 @@ namespace Ighan.CrashLitics.WebApi.Controllers
         {
             var index = 0;
 
-            return model.InnerExceptionModels.ConvertAll(f => new StorageModels.InnerExceptionLog
+            return model.InnerExceptionModels?.ConvertAll(f => new StorageModels.InnerExceptionLog
             {
                 Message = f.Message,
                 StackTrace = f.StackTrace,

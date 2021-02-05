@@ -1,9 +1,21 @@
 ﻿@page "/project/{projectId:int}"
 @inject Ighan.CrashLitics.WebUI.Services.ProjectService service
 
-<h3>Project</h3>
+<h3 class="d-inline">@project?.Title</h3>
+
+<div class="alert alert-success d-inline">@project?.Token</div>
 
 @code {
     [Parameter]
     public int ProjectId { get; set; }
+
+    private Ighan.CrashLitics.Shared.ProjectModels.ProjectDetailResult project;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        if (project == null || project.Id != ProjectId)
+            project = await service.GetById(ProjectId);
+
+        await base.OnParametersSetAsync();
+    }
 }

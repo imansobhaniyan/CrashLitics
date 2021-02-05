@@ -33,13 +33,15 @@ namespace Ighan.CrashLitics.WebUI.Services
         protected async Task<HttpClient> GetHttpClientAsync()
         {
             if (await tokenProvider.HasValidTokenAsync() && !httpClient.DefaultRequestHeaders.Contains("token"))
+            {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("token", await tokenProvider.GetTokenAsync());
+            }
             return httpClient;
         }
 
-        protected async Task<T> GetAsync<T>()
+        protected async Task<T> GetAsync<T>(int? id = null)
         {
-            var response = await (await GetHttpClientAsync()).GetFromJsonAsync<ApiResult<T>>(ApiAddress);
+            var response = await (await GetHttpClientAsync()).GetFromJsonAsync<ApiResult<T>>(ApiAddress + (id.HasValue ? $"/{id.Value}" : string.Empty));
 
             return ProcessApiResult<T>(response);
         }
@@ -56,7 +58,7 @@ namespace Ighan.CrashLitics.WebUI.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
 
             var result = await response.Content.ReadFromJsonAsync<ApiResult<TResult>>();
-            
+
             return ProcessApiResult(result);
         }
 

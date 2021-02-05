@@ -36,7 +36,7 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                 if (user != null && string.IsNullOrWhiteSpace(user.Token))
                 {
 
-                    user.Token = string.Join("", Enumerable.Range(0, 255).Select(f => (char)rand.Next((int)'A', (int)'z')));
+                    user.Token = await GetUniqeTokenAsync();
                     await dbContext.SaveChangesAsync();
                 }
 
@@ -57,6 +57,19 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                     ErrorMessage = exception.Message
                 };
             }
+        }
+
+        private async Task<string> GetUniqeTokenAsync()
+        {
+            string token;
+
+            do
+            {
+                token = string.Join("", Enumerable.Range(0, 255).Select(f => (char)rand.Next((int)'A', (int)'z')));
+            }
+            while (await dbContext.Users.AnyAsync(f => f.Token == token));
+
+            return token;
         }
     }
 }
