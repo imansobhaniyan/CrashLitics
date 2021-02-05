@@ -1,20 +1,45 @@
 ﻿@page "/project/{projectId:int}"
 @inject Ighan.CrashLitics.WebUI.Services.ProjectService service
 
-<h3 class="d-inline">@project?.Title</h3>
+@if (project != null)
+{
+    <h3 class="d-inline">@project?.Title</h3>
 
-<div class="alert alert-success d-inline">@project?.Token</div>
+    <div class="alert alert-success d-inline">@project?.Token</div>
+
+    foreach (var exceptionLog in project.ExceptionLogs)
+    {
+        if (!visibilities.ContainsKey(exceptionLog.Id))
+        {
+            visibilities.Add(exceptionLog.Id, false);
+        }
+
+        <div class="card my-3">
+            <div class="card-header pointer" @onclick="() => visibilities[exceptionLog.Id] = !visibilities[exceptionLog.Id]">@exceptionLog.CreateDate: @exceptionLog.Message</div>
+            @if (visibilities[exceptionLog.Id])
+            {
+                <div class="card-body">@exceptionLog.StackTrace</div>
+            }
+            <div class="card-footer">Release: @exceptionLog.Device.Release SDK: @exceptionLog.Device.SDK Model: @exceptionLog.Device.Model.Name</div>
+        </div>
+    }
+}
 
 @code {
     [Parameter]
     public int ProjectId { get; set; }
+
+    private Dictionary<long, bool> visibilities = new Dictionary<long, bool>();
 
     private Ighan.CrashLitics.Shared.ProjectModels.ProjectDetailResult project;
 
     protected async override Task OnParametersSetAsync()
     {
         if (project == null || project.Id != ProjectId)
+        {
             project = await service.GetById(ProjectId);
+            project.ExceptionLogs = project.ExceptionLogs.OrderByDescending(f => f.CreateDate).ToList();
+        }
 
         await base.OnParametersSetAsync();
     }

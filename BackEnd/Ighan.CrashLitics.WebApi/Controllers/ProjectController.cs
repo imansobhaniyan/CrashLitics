@@ -1,6 +1,7 @@
 ﻿using Ighan.CrashLitics.DataAccessLayer;
 using Ighan.CrashLitics.Shared.Common;
 using Ighan.CrashLitics.Shared.ProjectModels;
+using Ighan.SimpleMapper.Core;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,17 +37,20 @@ namespace Ighan.CrashLitics.WebApi.Controllers
                 if (token == StringValues.Empty)
                     throw new Exception(ApiResult.InvalidTokenErrorMessage);
 
-                var project = await dbContext.Projects.FirstOrDefaultAsync(f => f.Id == id);
+                var project = await dbContext.Projects
+                    .Include(f => f.ExceptionLogs)
+                        .ThenInclude(f => f.Device)
+                        .ThenInclude(f => f.Model)
+                        .ThenInclude(f => f.Brand)
+                        .ThenInclude(f => f.Manufacturer)
+                    .FirstOrDefaultAsync(f => f.Id == id);
+
+                var data = Mapper.Map<ProjectDetailResult>(project);
 
                 return new ApiResult<ProjectDetailResult>
                 {
                     Success = true,
-                    Data = new ProjectDetailResult
-                    {
-                        Id = project.Id,
-                        Title = project.Title,
-                        Token = project.Token
-                    }
+                    Data = data
                 };
             }
             catch (Exception exception)
