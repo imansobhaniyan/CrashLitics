@@ -68,6 +68,9 @@ namespace Ighan.CrashLitics.WebApi
                 builder.AllowAnyOrigin();
             });
 
+            using (var scope = app.ApplicationServices.CreateScope())
+                scope.ServiceProvider.GetRequiredService<CrashLiticsDbContext>().Database.Migrate();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
